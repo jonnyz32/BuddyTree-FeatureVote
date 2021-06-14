@@ -2,12 +2,10 @@
   display: inline-block;
   width: 225px;
   height: 20vh;
-  /* background-color: aqua; */
 }
+
 .FeatureSuggestion {
-  /* width: 50%; */
   padding: 2%;
-  /* height: 20%; */
   background-color: #eeeeee;
   border-radius: 10px;
   border: 4px solid #2e2e2e;
@@ -17,8 +15,6 @@
 
 .FeatureVotes {
   padding-left: 3%;
-
-  /* height: 60%; */
   border: 4px solid #2e2e2e;
   border-radius: 10px;
   background-color: #eeeeee;
@@ -26,7 +22,6 @@
 
 .FeatureItem {
   position: relative;
-  /* background-color: white; */
   width: 60%;
   min-height: 30px;
   word-wrap: break-word;
@@ -62,4 +57,11 @@
   height: 30px;
   left: 65%;
   top: 10%;
+}
+
+#numVotes {
+  position: absolute;
+  top: 10%;
+  left: 85%;
+  margin: 0;
 }
