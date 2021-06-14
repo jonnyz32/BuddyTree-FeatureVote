@@ -1,6 +1,6 @@
 import './App.css';
-import './AddFeature.js';
-import AddFeature from './AddFeature.js';
+import './AddFeature.tsx';
+import AddFeature from './AddFeature';
 
 
 

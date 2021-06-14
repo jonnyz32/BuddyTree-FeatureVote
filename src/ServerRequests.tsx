@@ -9,9 +9,7 @@ export const modifyVotesReq = (data) => {
         },
         body: data,
     }).then(res => {
-        if (res.status === 200) {
-            return res.json()
-        }
+        return res.json()
     }).catch(error => {
         console.log(error)
     })
@@ -28,9 +26,7 @@ export const featureAdd = (data) => {
         },
         body: data,
     }).then(res => {
-        if (res.status === 200) {
             return res.json()
-        }
     }).catch(error => {
         console.log(error)
     })

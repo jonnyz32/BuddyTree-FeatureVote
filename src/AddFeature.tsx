@@ -3,11 +3,11 @@ import './AddFeature.css';
 import {useState, useEffect} from 'react';
 import blackThumb from './assets/thumbsUpBlack.png';
 import blueThumb from './assets/thumbsUp.png';
-import {modifyVotesReq, featureAdd} from './ServerRequests.js';
+import {modifyVotesReq, featureAdd} from './ServerRequests';
 
 function AddFeature() {
     // All features with their votes
-    const [votes, setVotes] = useState([]);
+    const [votes, setVotes] = useState<any[]>([]);
 
     // The current input text
     const [featureText, setFeatureText] = useState("");
@@ -91,13 +91,11 @@ function AddFeature() {
                 'Content-Type': 'application/json',
             },
         }).then(res => {
-            if (res.status === 200) {
                 return res.json()
-            }
         })
             .then(arr => {
                 // Populate newVotes array with response object and set state
-                let newVotes = []	
+                let newVotes = [] as any;	
                 arr.forEach(element => {
                     element["image"] = 0
                     newVotes.push(element)
@@ -120,7 +118,7 @@ function AddFeature() {
     <div className="Container"> 
         <p>What new feature would you<br/>like us to add to Buddytree?</p>
         <div className="FeatureSuggestion">
-            <textarea rows="2" id="inputFeature" value={featureText} 
+            <textarea rows={2} id="inputFeature" value={featureText} 
             onChange={(event) => handleTextChange(event)}></textarea>
             <button id="addFeature"onClick={submitNewFeature}>Add</button>
         </div>
