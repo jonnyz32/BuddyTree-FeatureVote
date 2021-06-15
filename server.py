@@ -22,6 +22,7 @@ class Feature_votes(db.Model):
         self.votes = votes
         self.date = date
 
+# Serve the react app
 @app.route("/")
 def index():
     return app.send_static_file("index.html")
