@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_cors import CORS
 
-app = Flask(__name__,static_folder='client/build',static_url_path='')
+app = Flask(__name__,static_folder='./build',static_url_path='')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://kyznlguphxnjzx:3f14c7bc4be324cc871b16147800ede42df5f0406593882b0b9020dba194bf86@ec2-54-243-92-68.compute-1.amazonaws.com:5432/d3fint3qcntumv'
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.secret_key = 'secret string'
