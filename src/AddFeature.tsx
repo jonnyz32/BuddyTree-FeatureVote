@@ -85,7 +85,7 @@ function AddFeature() {
 
     /* Fetch features and votes from the db on startup */
     const fetchVotes = () => {
-        fetch("http://localhost:5000/getVotes", {
+        fetch("/getVotes", {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

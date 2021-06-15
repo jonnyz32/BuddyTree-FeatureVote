@@ -2,7 +2,7 @@
 /* Send request to server to increase or decrease votes in
    the database for a given feature */
 export const modifyVotesReq = (data) => {
-    fetch("http://localhost:5000/featureModifyVotes", {
+    fetch("/featureModifyVotes", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -19,7 +19,7 @@ export const modifyVotesReq = (data) => {
 /* Send request to server to add a new feature in
    the database */
 export const featureAdd = (data) => {
-    fetch("http://localhost:5000/featureAdd", {
+    fetch("/featureAdd", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
