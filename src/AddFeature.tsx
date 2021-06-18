@@ -7,6 +7,12 @@ import {modifyVotesReq, featureAdd} from './ServerRequests';
 
 function AddFeature() {
     // All features with their votes
+    let path = window.location.pathname;
+    if (path === '/'){
+        path = ''
+    }
+    
+    {console.log("path: ", path)}
     const [votes, setVotes] = useState<any[]>([]);
 
     // The current input text
@@ -14,6 +20,11 @@ function AddFeature() {
 
     /* Increase or decrease the votes for the specified feature*/ 
     const modifyVotes = (index) => {
+        if (path == ""){
+            alert("Only users can vote on features")
+            return
+        }
+
         // Create the new votes array for updated state
         let newVotes = [...votes]
 
@@ -44,7 +55,7 @@ function AddFeature() {
             // increaseVotesReq(JSON.stringify(data))
         }
 
-        modifyVotesReq(JSON.stringify(data))
+        modifyVotesReq(JSON.stringify(data), path)
 
         // Update the state with the new votes array
         setVotes(newVotes)
@@ -60,6 +71,10 @@ function AddFeature() {
 
     // Add a new feature to be polled
     const submitNewFeature = () => {
+        if (path == ""){
+            alert("Only users can add features")
+            return
+        }
 
         // Create new votes array
         let newVotes = [...votes]
@@ -80,12 +95,12 @@ function AddFeature() {
 
         // Send new feature to server to be added to database
         const data = {feature: featureText}
-        featureAdd(JSON.stringify(data))
+        featureAdd(JSON.stringify(data), path)
     }
 
     /* Fetch features and votes from the db on startup */
     const fetchVotes = () => {
-        fetch("/getVotes", {
+        fetch("/getVotes" + path, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -96,8 +111,12 @@ function AddFeature() {
             .then(arr => {
                 // Populate newVotes array with response object and set state
                 let newVotes = [] as any;	
-                arr.forEach(element => {
-                    element["image"] = 0
+                arr[0].forEach(element => {
+                    if( element.feature in arr[1] ){
+                        element["image"] = 1
+                    } else {
+                        element["image"] = 0
+                    }
                     newVotes.push(element)
                 });		
                 setVotes(newVotes);

@@ -12,6 +12,14 @@ app.secret_key = 'secret string'
 CORS(app)
 db = SQLAlchemy(app)
 
+class User_votes(db.Model):
+    userid = db.Column(db.Integer, primary_key=True)
+    feature = db.Column(db.String(500), primary_key=True)
+
+    def __init__(self, userid, feature):
+        self.userid = userid
+        self.feature = feature
+
 class Feature_votes(db.Model):
     feature = db.Column(db.String(500), primary_key=True)
     votes = db.Column(db.Integer, nullable=False)
@@ -23,20 +31,54 @@ class Feature_votes(db.Model):
         self.date = date
 
 # Serve the react app
+
 @app.route("/")
-def index():
+def index(): 
     return app.send_static_file("index.html")
 
-# Retrieve currently polled features from Feature_votes
+@app.route("/<user>")
+def userIndex(user): 
+    return app.send_static_file("index.html")
+
+     
+
+ # Retrieve currently polled features from Feature_votes
 @app.route("/getVotes", methods=['GET'])
 def getVotes():
     rows = Feature_votes.query.filter().order_by(Feature_votes.date)
     response = []
+    feature_votes = []
+    user_votes = {}
     for row in rows:
-        response.append(
+        feature_votes.append(
             {"feature": row.feature,
              "votes": row.votes
         })
+    response.append(feature_votes)
+    response.append(user_votes)
+    return flask.jsonify(response)
+   
+
+# Retrieve currently polled features from Feature_votes
+@app.route("/getVotes/<user>", methods=['GET'])
+def getVotesUser(user):
+    rows = Feature_votes.query.filter().order_by(Feature_votes.date)
+    response = []
+    feature_votes = []
+    user_votes = {}
+    for row in rows:
+        feature_votes.append(
+            {"feature": row.feature,
+             "votes": row.votes
+        })
+    response.append(feature_votes)
+    
+    userVotes = User_votes.query.filter_by(userid = user).all() 
+    for row in userVotes:
+        user_votes[row.feature] = 1
+    response.append(user_votes)
+    print("userVotes: ", userVotes)
+    
     
     return flask.jsonify(response)
 
@@ -56,21 +98,28 @@ def featureAdd():
     return response
   
 
-@app.route("/featureModifyVotes", methods=['POST'])
-def featureUnvote():
+@app.route("/featureModifyVotes/<user>", methods=['POST'])
+def featureModifyVotes(user):
     feature = request.get_json()["feature"]
     direction = request.get_json()["direction"]
     featureEntry = Feature_votes.query.filter_by(feature=feature).first()
+
     
     if (direction == "increase"):
         featureEntry.votes += 1
+        userEntry = User_votes(user, feature)
+        db.session.add(userEntry)
     else:
         featureEntry.votes -= 1
+        userEntry = User_votes.query.filter(User_votes.userid == user, User_votes.feature == feature).first()
+        db.session.delete(userEntry)
     
     db.session.commit()
     response = {featureEntry.feature: featureEntry.votes}
+
+    
+    
     return response
 
 if __name__ == '__main__':
-    # Threaded option to enable multiple instances for multiple user access support
     app.run()
