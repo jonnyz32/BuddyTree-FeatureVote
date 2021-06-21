@@ -11,7 +11,6 @@ function AddFeature() {
     if (path === '/'){
         path = ''
     }
-    
     {console.log("path: ", path)}
     const [votes, setVotes] = useState<any[]>([]);
 
@@ -20,7 +19,7 @@ function AddFeature() {
 
     /* Increase or decrease the votes for the specified feature*/ 
     const modifyVotes = (index) => {
-        if (path == ""){
+        if (path === ""){
             alert("Only users can vote on features")
             return
         }
@@ -71,8 +70,16 @@ function AddFeature() {
 
     // Add a new feature to be polled
     const submitNewFeature = () => {
-        if (path == ""){
+        console.log("in submit new feature")
+        if (path === ""){
             alert("Only users can add features")
+            return
+        }
+
+        // Check to see if feature text has at least one letter
+        const hasLetter = /[a-zA-Z]/.test(featureText)
+
+        if (! hasLetter){
             return
         }
 
